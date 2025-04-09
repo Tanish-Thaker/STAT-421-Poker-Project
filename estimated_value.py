@@ -1,3 +1,5 @@
+import sys
+
 def calculate_ev(win_percentage, my_stake, opponent_stake):
     """
     Calculate the expected value (EV) of a poker hand.
