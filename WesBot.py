@@ -4,14 +4,18 @@ import numpy as np
 import pandas as pd
 import random
 
-import HandOddsCalcWes
+import HandOddsCalcWes as hoc
 
 ############################## OBJECT DEFINITIONS ##############################
 
 class Decision:
-  def __init__(self, type:str, size:float = 0.0):
+  def __init__(self, type:str, size:int = 0):
     self.type = type
     self.size = size
+  
+  def copy(self):
+    output = Decision(self.type, self.size)
+    return output
 
 class PokerBot:
   def __init__(self, k:int = 10, EV_weight:float = 1.0, maturity:int = 50):
@@ -74,7 +78,7 @@ class PokerBot:
     # act depending on maturity
     if (not mature):
       # too young, act randomly to get some data to work with
-      babys_decision = np.random.choice(2)
+      babys_decision = np.random.choice(3)
       if (babys_decision == 0):
         # baby will call/check if possible
         if (game.validate_move(player, th.ActionType.CALL) or
@@ -89,13 +93,14 @@ class PokerBot:
         decision = Decision("FOLD")
       else:
         # baby will raise if possible
-        min_raise = game.get_available_moves().raise_range[0]
-        max_raise = np.min([game.players[player].chips,
-                            game.get_available_moves().raise_range[-1]])
+        min_raise = int(game.get_available_moves().raise_range.start)
+        max_raise = int(np.min([game.players[player].chips,
+                                game.get_available_moves().raise_range.stop]))
         if (min_raise <= max_raise and
             game.validate_move(player, th.ActionType.RAISE, min_raise) and
             game.validate_move(player, th.ActionType.RAISE, max_raise)):
-          decision = Decision("RAISE", np.random.uniform(min_raise, max_raise))
+          decision = \
+            Decision("RAISE", int(np.random.uniform(min_raise, max_raise)))
         elif (game.validate_move(player, th.ActionType.CALL) or
               game.validate_move(player, th.ActionType.CHECK)):
           decision = Decision("CALL/CHECK")
@@ -148,12 +153,12 @@ class PokerBot:
       else:
         # raise is "best"
         min_raise = np.max([
-          game.get_available_moves().raise_range[0],  # min from game state
-          np.min(hist_raise.loc[nn_raise, "size"])])  # min from agent
+          game.get_available_moves().raise_range.start, # min from game state
+          np.min(hist_raise.loc[nn_raise, "size"])])    # min from agent
         max_raise = np.min([
-          game.players[player].chips,                 # max from chip count
-          game.get_available_moves().raise_range[-1], # max from game state
-          np.max(hist_raise.loc[nn_raise, "size"])])  # max from agent
+          game.players[player].chips,                   # max from chip count
+          game.get_available_moves().raise_range.stop,  # max from game state
+          np.max(hist_raise.loc[nn_raise, "size"])])    # max from agent
         # ensure decision is possible
         if (min_raise <= max_raise and
             game.validate_move(player, th.ActionType.RAISE, min_raise) and
@@ -167,7 +172,7 @@ class PokerBot:
         else:
           decision = Decision("FOLD")
     # log and return decision
-    self._log_decision_(decision, EV, hand_probs)
+    self._log_decision_(decision.copy(), EV, hand_probs)
     return decision
 
 ################################## OBJECT END ##################################
