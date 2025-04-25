@@ -220,7 +220,7 @@ def estimate_win_and_hand_probs(game:th.TexasHoldEm, player:int,
   # get hand type probabilities
   hand_type_probs = np.zeros(9)
   for i in range(9):
-    hand_type_probs[i] = np.mean(hand_types == i)
+    hand_type_probs[i] = np.mean(hand_types == i, dtype = float)
   
   return np.mean(wins_and_losses), hand_type_probs
 
@@ -228,65 +228,65 @@ def estimate_win_and_hand_probs(game:th.TexasHoldEm, player:int,
 
 # this is for you guys to see that this works, because it does :D
 
-game = th.TexasHoldEm(buyin=500, big_blind=5, small_blind=2, max_players=2)
-game.start_hand()
+# game = th.TexasHoldEm(buyin=500, big_blind=5, small_blind=2, max_players=2)
+# game.start_hand()
 
-print("Each player's hands")
-print("P1:", game.get_hand(0))
-print("P2:", game.get_hand(1))
-print()
+# print("Each player's hands")
+# print("P1:", game.get_hand(0))
+# print("P2:", game.get_hand(1))
+# print()
 
-game.take_action(th.ActionType.CALL)
-game.take_action(th.ActionType.CHECK)
+# game.take_action(th.ActionType.CALL)
+# game.take_action(th.ActionType.CHECK)
 
-print("Flop:")
-print(game.board)
-print()
+# print("Flop:")
+# print(game.board)
+# print()
 
-print("Hand evaluations")
-print("P1:", eval.rank_to_string(eval.evaluate(game.get_hand(0), game.board)))
-print("P2:", eval.rank_to_string(eval.evaluate(game.get_hand(1), game.board)))
-print()
+# print("Hand evaluations")
+# print("P1:", eval.rank_to_string(eval.evaluate(game.get_hand(0), game.board)))
+# print("P2:", eval.rank_to_string(eval.evaluate(game.get_hand(1), game.board)))
+# print()
 
-print("Bootstrap probabilities of winning hand (NO KNOWLEDGE OF OTHER PLAYER):")
-print("P1:", estimate_win_prob(game, 0, 2, 1000))
-print("P2:", estimate_win_prob(game, 1, 2, 1000))
-print()
+# print("Bootstrap probabilities of winning hand (NO KNOWLEDGE OF OTHER PLAYER):")
+# print("P1:", estimate_win_prob(game, 0, 2, 1000))
+# print("P2:", estimate_win_prob(game, 1, 2, 1000))
+# print()
 
-game.take_action(th.ActionType.CHECK)
-game.take_action(th.ActionType.CHECK)
+# game.take_action(th.ActionType.CHECK)
+# game.take_action(th.ActionType.CHECK)
 
-print("Flop and Turn:")
-print(game.board)
-print()
+# print("Flop and Turn:")
+# print(game.board)
+# print()
 
-print("Hand evaluations")
-print("P1:", eval.rank_to_string(eval.evaluate(game.get_hand(0), game.board)))
-print("P2:", eval.rank_to_string(eval.evaluate(game.get_hand(1), game.board)))
-print()
+# print("Hand evaluations")
+# print("P1:", eval.rank_to_string(eval.evaluate(game.get_hand(0), game.board)))
+# print("P2:", eval.rank_to_string(eval.evaluate(game.get_hand(1), game.board)))
+# print()
 
-print("Bootstrap probabilities of winning hand (NO KNOWLEDGE OF OTHER PLAYER):")
-print("P1:", estimate_win_prob(game, 0, 2, 1000))
-print("P2:", estimate_win_prob(game, 1, 2, 1000))
-print()
+# print("Bootstrap probabilities of winning hand (NO KNOWLEDGE OF OTHER PLAYER):")
+# print("P1:", estimate_win_prob(game, 0, 2, 1000))
+# print("P2:", estimate_win_prob(game, 1, 2, 1000))
+# print()
 
-game.take_action(th.ActionType.CHECK)
-game.take_action(th.ActionType.CHECK)
+# game.take_action(th.ActionType.CHECK)
+# game.take_action(th.ActionType.CHECK)
 
-print("Flop and Turn and River:")
-print(game.board)
-print()
+# print("Flop and Turn and River:")
+# print(game.board)
+# print()
 
-print("Hand evaluations")
-print("P1:", eval.rank_to_string(eval.evaluate(game.get_hand(0), game.board)))
-print("P2:", eval.rank_to_string(eval.evaluate(game.get_hand(1), game.board)))
-print()
+# print("Hand evaluations")
+# print("P1:", eval.rank_to_string(eval.evaluate(game.get_hand(0), game.board)))
+# print("P2:", eval.rank_to_string(eval.evaluate(game.get_hand(1), game.board)))
+# print()
 
-print("Bootstrap probabilities of winning hand (NO KNOWLEDGE OF OTHER PLAYER):")
-print("P1:", estimate_win_prob(game, 0, 2, 1000))
-print("P2:", estimate_win_prob(game, 1, 2, 1000))
-print()
+# print("Bootstrap probabilities of winning hand (NO KNOWLEDGE OF OTHER PLAYER):")
+# print("P1:", estimate_win_prob(game, 0, 2, 1000))
+# print("P2:", estimate_win_prob(game, 1, 2, 1000))
+# print()
 
-print("Hand ranks (LOWEST WINS THE HAND):")
-print("P1:", eval.evaluate(game.get_hand(0), game.board))
-print("P2:", eval.evaluate(game.get_hand(1), game.board))
+# print("Hand ranks (LOWEST WINS THE HAND):")
+# print("P1:", eval.evaluate(game.get_hand(0), game.board))
+# print("P2:", eval.evaluate(game.get_hand(1), game.board))
