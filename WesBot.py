@@ -18,7 +18,7 @@ class Decision:
     return output
 
 class PokerBot:
-  def __init__(self, k:int = 10, EV_weight:float = 1.0, maturity:int = 50):
+  def __init__(self, k:int = 50, EV_weight:float = 1.0, maturity:int = 50):
     self.k = k
     self.age = int(0)
     self.maturity = maturity
@@ -96,6 +96,8 @@ class PokerBot:
         min_raise = int(game.get_available_moves().raise_range.start)
         max_raise = int(np.min([game.players[player].chips,
                                 game.get_available_moves().raise_range.stop]))
+        # so baby doesn't throw away all its life savings
+        max_raise = (3*min_raise + max_raise) // 4
         if (min_raise <= max_raise and
             game.validate_move(player, th.ActionType.RAISE, min_raise) and
             game.validate_move(player, th.ActionType.RAISE, max_raise)):
