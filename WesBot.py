@@ -45,12 +45,12 @@ class PokerBot:
                                  "PFH":[hand_probs[6]], "PFK":[hand_probs[7]],
                                  "PSF":[hand_probs[8]]})
     self.round = pd.concat([self.round, new_decision])
+    self.age += 1
   
   def log_round(self, outcome:float):
     # append entire round to `self.history`
     self.round["outcome"] = [outcome] * self.round.shape[0]
     self.history = pd.concat([self.history, self.round])
-    self.age += 1
   
   def _normalize_(self):
     # normalize "distance parameters" for more reliability
